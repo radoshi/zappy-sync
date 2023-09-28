@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "zappy-sync"
-version = "0.3.0"
+version = "0.5.0"
 description = "Little utility to rsync local zappy files to cloud storage"
 authors = ["Rushabh Doshi <radoshi+pypi@gmail.com>"]
 license = "MIT"
