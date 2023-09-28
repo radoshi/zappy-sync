@@ -1,0 +1,26 @@
+[tool.poetry]
+name = "zappy-sync"
+version = "0.1.0"
+description = "Little utility to rsync local zappy files to cloud storage"
+authors = ["Rushabh Doshi <radoshi+pypi@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+packages = [{ include = "zappy" }]
+homepage = "https://github.com/radoshi/zappy-sync"
+repository = "https://github.com/radoshi/zappy-sync"
+
+[tool.poetry.scripts]
+zappy-sync = "zappy.zappy:main"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+click = "^8.1.7"
+rich = "^13.5.3"
+google-cloud-storage = "^2.11.0"
+watchdog = "^3.0.0"
+tomli = "^2.0.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
