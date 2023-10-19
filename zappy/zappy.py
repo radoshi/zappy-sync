@@ -15,10 +15,8 @@ console = Console()
 
 def get_observer():
     if platform.system() == "Darwin":
-        console.print("Using FSEventsObserver")
         return FSEventsObserver
     else:
-        console.print("Using Observer")
         return Observer
 
 
@@ -67,8 +65,7 @@ class FsHandler(FileSystemEventHandler):
             else:
                 if self.dry_run:
                     console.print(
-                        f"{file_path} will be uploaded to {self.bucket_name}.",
-                        style="bold blue",
+                        f"{file_path} will be uploaded to {self.bucket_name}."
                     )
                 else:
                     blob.upload_from_filename(file_path)
@@ -76,6 +73,7 @@ class FsHandler(FileSystemEventHandler):
                         f"{file_path} uploaded to {self.bucket_name}.",
                         style="bold blue",
                     )
+                    console.print(f"Public URL: {blob.public_url}", style="bold green")
 
 
 @click.command()
@@ -115,6 +113,7 @@ def main(directory, bucket, project, upload_missing, credentials, dry_run, provi
     os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = str(credentials)
 
     if upload_missing:
+        console.print("Checking for missing files...")
         client = storage.Client()
         bucket = client.get_bucket(bucket)
         for file_path in directory.iterdir():
@@ -124,17 +123,18 @@ def main(directory, bucket, project, upload_missing, credentials, dry_run, provi
                 if not blob.exists():
                     if dry_run:
                         console.print(
-                            f"{file_path} will be uploaded to {bucket}.",
+                            f"{file_path} will be uploaded to {bucket.name}.",
                             style="bold blue",
                         )
                     else:
                         blob.upload_from_filename(file_path)
+                        console.print(f"{file_path} uploaded to {bucket.name}.")
                         console.print(
-                            f"{file_path} uploaded to {bucket}.", style="bold blue"
+                            f"Public URL: {blob.public_url}\n", style="bold green"
                         )
 
     console.print(
-        f"Monitoring {directory} for new files to upload to {bucket}...",
+        f"Monitoring {directory} for new files to upload to {bucket.name}...",
         style="bold green",
     )
 
